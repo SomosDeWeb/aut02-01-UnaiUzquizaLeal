@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -16,9 +17,11 @@ public class Main {
             System.out.println("  2. Listar todos los estudiantes");
             System.out.println("  3. Buscar estudiante por su nombre");
             System.out.println("  4. Calcular la media de todas las notas");
+            System.out.println("  5. Mostrar al estudiante con la mejor calificación");
             System.out.println("  6. Salir");
             System.out.print("\n >> Elige una opcion > ");
             opcion = Integer.parseInt(sc.nextLine());
+
 
             switch (opcion) {
                 case 1:
@@ -84,27 +87,42 @@ public class Main {
                     break;
 
                 case 4:
-                    boolean hayDatos = false;
-                    int tamanoLista = listaEstudiantes.size();
                     double totalNotas = 0;
                     int nNotas = 0;
                     double mediaNotas;
-                    if (tamanoLista > 0) {
+                    if (listaEstudiantes.isEmpty()) {
+                        System.out.println("\n>>> No se encontraron datos para saber el estudiante con mayor calificación");
+                    } else {
                         for (Estudiante i : listaEstudiantes) {
                             nNotas ++;
-                            double x = 0;
-                            x = i.getNota();
+                            double x = i.getNota();
                             totalNotas += x;
                         }
                         mediaNotas = totalNotas / nNotas;
                         System.out.print("   > La nota media de todos los estudiantes es " + mediaNotas);
-                        hayDatos = true;
 
                     }
+                    break;
 
-                    if (!hayDatos) {
-                        System.out.println("\n>>> No se encontraron datos para calcular la media");
-                    }
+                case 5:
+                    if (listaEstudiantes.isEmpty()) {
+                        System.out.println("\n>>> No se encontraron datos para saber el estudiante con mayor calificación");
+                    } else {
+                        ArrayList<Double> listaNotas = new ArrayList<>();
+                        for (Estudiante i : listaEstudiantes) {
+                            listaNotas.add(i.getNota());
+                        }
+
+                        double notaMaxima = Collections.max(listaNotas);
+                        for (Estudiante i : listaEstudiantes) {
+                            if (i.getNota() == notaMaxima) {
+                                System.out.printf(
+                                    "   > Estudiante con la mayor media es: %s %s %s, %d años, nota media: %.2f.%n",
+                                    i.getNombre(), i.getApellido1(), i.getApellido2(), i.getEdad(), i.getNota()
+                                );
+                            }
+                        }
+                    }1
                     break;
 
                 case 6:
