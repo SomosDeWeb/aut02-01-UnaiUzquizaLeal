@@ -15,8 +15,9 @@ public class Main {
             System.out.println("  1. Crear estudiante");
             System.out.println("  2. Listar todos los estudiantes");
             System.out.println("  3. Buscar estudiante por su nombre");
+            System.out.println("  4. Calcular la media de todas las notas");
             System.out.println("  6. Salir");
-            System.out.print(" >> Elige una opcion > ");
+            System.out.print("\n >> Elige una opcion > ");
             opcion = Integer.parseInt(sc.nextLine());
 
             switch (opcion) {
@@ -74,7 +75,6 @@ public class Main {
                                     i.getNombre(), i.getApellido1(), i.getApellido2(), i.getEdad(), i.getNota()
                             );
                             encontrado = true;
-
                         }
                     }
 
@@ -82,6 +82,31 @@ public class Main {
                         System.out.println("\n>>> No se encontró ningún estudiante con ese nombre.");
                     }
                     break;
+
+                case 4:
+                    boolean hayDatos = false;
+                    int tamanoLista = listaEstudiantes.size();
+                    double totalNotas = 0;
+                    int nNotas = 0;
+                    double mediaNotas;
+                    if (tamanoLista > 0) {
+                        for (Estudiante i : listaEstudiantes) {
+                            nNotas ++;
+                            double x = 0;
+                            x = i.getNota();
+                            totalNotas += x;
+                        }
+                        mediaNotas = totalNotas / nNotas;
+                        System.out.print("   > La nota media de todos los estudiantes es " + mediaNotas);
+                        hayDatos = true;
+
+                    }
+
+                    if (!hayDatos) {
+                        System.out.println("\n>>> No se encontraron datos para calcular la media");
+                    }
+                    break;
+
                 case 6:
                     System.out.println("\n>>> Saliendo del programa...");
                     condicion = false;
