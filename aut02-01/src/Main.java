@@ -1,14 +1,19 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int opcion = 0;
         boolean condicion = true;
+        ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
+
 
         do {
             System.out.println("\n>>> MENU ");
             System.out.println("  1. Crear estudiante");
+            System.out.println("  2. Listar todos los estudiantes");
             System.out.println("  3. Salir");
             System.out.print(" >> Elige una opcion > ");
             opcion = Integer.parseInt(sc.nextLine());
@@ -30,6 +35,8 @@ public class Main {
                     double nota = Double.parseDouble(notaStr);
 
                     Estudiante p1 = new Estudiante(nombre, apellido1, apellido2, edad, nota);
+                    listaEstudiantes.add(p1);
+
 
                     System.out.println("\n >> Datos del o la estudiante <<");
                     System.out.printf(
@@ -38,7 +45,20 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("Opción 2 seleccionada");
+                    int contador = 0;
+                    if (listaEstudiantes.isEmpty()) {
+                        System.out.println(" \n2>> No hay estudiantes registrados");
+                    }
+                    else {
+                        for (Estudiante i : listaEstudiantes) {
+                            ++contador;
+                            System.out.printf(
+                            "> Estudiante n%d: %s %s %s, %d años, nota media: %.2f%n",
+                                    contador, i.getNombre(), i.getApellido1(), i.getApellido2(), i.getEdad(), i.getNota()
+                            );
+                        }
+                    }
+                    contador = 0;
                     break;
 
                 case 3:
