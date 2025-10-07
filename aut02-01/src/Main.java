@@ -14,7 +14,8 @@ public class Main {
             System.out.println("\n>>> MENU ");
             System.out.println("  1. Crear estudiante");
             System.out.println("  2. Listar todos los estudiantes");
-            System.out.println("  3. Salir");
+            System.out.println("  3. Buscar estudiante por su nombre");
+            System.out.println("  6. Salir");
             System.out.print(" >> Elige una opcion > ");
             opcion = Integer.parseInt(sc.nextLine());
 
@@ -53,16 +54,36 @@ public class Main {
                         for (Estudiante i : listaEstudiantes) {
                             ++contador;
                             System.out.printf(
-                            "> Estudiante n%d: %s %s %s, %d años, nota media: %.2f%n",
+                            "> Estudiante n%d: %s %s %s, %d años, nota media: %.2f.%n",
                                     contador, i.getNombre(), i.getApellido1(), i.getApellido2(), i.getEdad(), i.getNota()
                             );
                         }
                     }
                     contador = 0;
                     break;
-
                 case 3:
-                    System.out.println("Saliendo del programa...");
+
+                    System.out.print("  >> Introduce el nombre: ");
+                    String buscarNombre = sc.nextLine();
+                    boolean encontrado = false;
+
+                    for (Estudiante i : listaEstudiantes) {
+                        if (i.getNombre().equalsIgnoreCase(buscarNombre)) {
+                            System.out.printf(
+                                    "   > Estudiante encontrado: %s %s %s, %d años, nota media: %.2f.%n",
+                                    i.getNombre(), i.getApellido1(), i.getApellido2(), i.getEdad(), i.getNota()
+                            );
+                            encontrado = true;
+
+                        }
+                    }
+
+                    if (!encontrado) {
+                        System.out.println("\n>>> No se encontró ningún estudiante con ese nombre.");
+                    }
+                    break;
+                case 6:
+                    System.out.println("\n>>> Saliendo del programa...");
                     condicion = false;
                     break;
 
