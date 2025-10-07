@@ -13,34 +13,39 @@ public class Main {
 
         do {
             menu();
-            System.out.print("\n >> Elige una opcion > ");
-            opcion = Integer.parseInt(sc.nextLine());
+            try {
+                System.out.print("\n >> Elige una opcion > ");
+                opcion = Integer.parseInt(sc.nextLine());  // Intentamos leer un número
 
-            switch (opcion) {
-                case 1:
-                    crearEstudiante(listaEstudiantes, sc);
-                    break;
-                case 2:
-                    listarEstudiantes(listaEstudiantes);
-                    break;
-                case 3:
-                    buscarEstudiante(listaEstudiantes, sc);
-                    break;
-                case 4:
-                    calcularMedia(listaEstudiantes);
-                    break;
-                case 5:
-                    mayorNota(listaEstudiantes, sc);
-                    break;
-                case 6:
-                    System.out.println("\n>>> Saliendo del programa...");
-                    condicion = false;
-                    break;
-                default:
-                    System.out.println("Opción no válida. Intenta de nuevo.");
-                    break;
+                switch (opcion) {
+                    case 1:
+                        crearEstudiante(listaEstudiantes, sc);
+                        break;
+                    case 2:
+                        listarEstudiantes(listaEstudiantes);
+                        break;
+                    case 3:
+                        buscarEstudiante(listaEstudiantes, sc);
+                        break;
+                    case 4:
+                        calcularMedia(listaEstudiantes);
+                        break;
+                    case 5:
+                        mayorNota(listaEstudiantes, sc);
+                        break;
+                    case 6:
+                        System.out.println("\n>>> Saliendo del programa...");
+                        condicion = false;
+                        break;
+                    default:
+                        System.out.println("\n>>> Opción no válida. Intenta de nuevo.");
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\n>>> Error: Debes introducir un número válido. Intenta de nuevo.");
             }
         } while (condicion);
+
 
         sc.close();
     }
@@ -52,51 +57,106 @@ public class Main {
         System.out.println("  4. Calcular la media de todas las notas");
         System.out.println("  5. Mostrar al estudiante con la mejor calificación");
         System.out.println("  6. Salir");
-
     }
 
     public static void crearEstudiante(ArrayList<Estudiante> listaEstudiantes, Scanner sc) {
-        System.out.println("  > Introduce los datos del estudiante ");
-        System.out.print("   > Introduce el nombre: ");
-        String nombre = sc.nextLine();
-        System.out.print("   > Introduce el primer apellido: ");
-        String apellido1 = sc.nextLine();
-        System.out.print("   > Introduce el segundo apellido: ");
-        String apellido2 = sc.nextLine();
-        System.out.print("   > Introduce la edad: ");
-        int edad = sc.nextInt();
-        sc.nextLine();
-        System.out.print("   > Introduce la nota media del estudiante: ");
-        String notaStr = sc.nextLine().replace(",", ".");
-        double nota = Double.parseDouble(notaStr);
+        while (true) {
+            try {
+                String nombre;
+                String apellido1;
+                String apellido2;
+                int edad;
+                double nota;
 
-        Estudiante p1 = new Estudiante(nombre, apellido1, apellido2, edad, nota);
-        listaEstudiantes.add(p1);
 
-        System.out.printf(
-                "\n >> Datos del o la estudiante <<\nDatos del Estudiante > %s %s %s, tiene %d años, su nota media es de %.2f. %n",
-                p1.getNombre(), p1.getApellido1(), p1.getApellido2(), p1.getEdad(), p1.getNota()
-        );
+                System.out.println("  > Introduce los datos del estudiante ");
+
+                do {
+                    System.out.print("   > Introduce el nombre: ");
+                    nombre = sc.nextLine().trim();
+                    if (nombre.isEmpty()) {
+                        System.out.println("     * El nombre no puede estar vacío. Intenta de nuevo.");
+                    }
+                } while (nombre.isEmpty());
+
+                do {
+                    System.out.print("   > Introduce el primer apellido: ");
+                    apellido1 = sc.nextLine().trim();
+                    if (apellido1.isEmpty()) {
+                        System.out.println("     * El primer apellido no puede estar vacío. Intenta de nuevo.");
+                    }
+                } while (apellido1.isEmpty());
+
+                do {
+                    System.out.print("   > Introduce el segundo apellido: ");
+                    apellido2 = sc.nextLine().trim();
+                    if (apellido2.isEmpty()) {
+                        System.out.println("     * El segundo apellido no puede estar vacío. Intenta de nuevo.");
+                    }
+                } while (apellido2.isEmpty());
+
+                do {
+                    System.out.print("   > Introduce la edad: ");
+                    edad = Integer.parseInt(sc.nextLine());
+                    if (edad <= 0) {
+                        System.out.println("     * La edad debe ser mayor que 0. Intenta de nuevo.");
+                    }
+                } while (edad <= 0);
+
+                do {
+                    System.out.print("   > Introduce la nota media del estudiante: ");
+                    String notaStr = sc.nextLine().replace(",", ".");
+                    nota = Double.parseDouble(notaStr);
+                    if (nota < 0 || nota > 10) {
+                        System.out.println("     * La nota debe estar entre 0 y 10. Intenta de nuevo.");
+                    }
+                } while (nota < 0 || nota > 10);
+
+                Estudiante p1 = new Estudiante(nombre, apellido1, apellido2, edad, nota);
+                listaEstudiantes.add(p1);
+
+                System.out.printf(
+                        "\n >> Datos del o la estudiante: %s %s %s, %d años, nota media: %.2f.%n",
+                        p1.getNombre(), p1.getApellido1(), p1.getApellido2(), p1.getEdad(), p1.getNota()
+                );
+
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Debes introducir un número válido para la edad y la nota. Intenta de nuevo.\n");
+            } catch (Exception e) {
+                System.out.println("Ocurrió un error: " + e.getMessage() + ". Intenta de nuevo.\n");
+            }
+        }
     }
 
     public static void listarEstudiantes(ArrayList<Estudiante> listaEstudiantes) {
-        if (listaEstudiantes.isEmpty()) {
-            System.out.println(" \n>> No hay estudiantes registrados");
-        } else {
-            int contador = 0;
-            for (Estudiante i : listaEstudiantes) {
-                ++contador;
-                System.out.printf(
-                        "  > Estudiante n%d: %s %s %s, %d años, nota media: %.2f.%n",
-                        contador, i.getNombre(), i.getApellido1(), i.getApellido2(), i.getEdad(), i.getNota()
-                );
+        try {
+            if (listaEstudiantes.isEmpty()) {
+                System.out.println("\n>> No hay estudiantes registrados");
+            } else {
+                int contador = 0;
+                for (Estudiante i : listaEstudiantes) {
+                    ++contador;
+                    System.out.printf(
+                            "  > Estudiante n%d: %s %s %s, %d años, nota media: %.2f.%n",
+                            contador,
+                            i.getNombre() != null ? i.getNombre() : "N/A",
+                            i.getApellido1() != null ? i.getApellido1() : "N/A",
+                            i.getApellido2() != null ? i.getApellido2() : "N/A",
+                            i.getEdad(),
+                            i.getNota()
+                    );
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al listar los estudiantes: " + e.getMessage());
         }
     }
 
     public static void buscarEstudiante(ArrayList<Estudiante> listaEstudiantes, Scanner sc) {
         System.out.print("  >> Introduce el nombre: ");
-        String buscarNombre = sc.nextLine();
+        String buscarNombre = sc.nextLine().trim();
         boolean encontrado = false;
 
         for (Estudiante i : listaEstudiantes) {
